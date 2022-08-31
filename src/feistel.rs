@@ -11,11 +11,18 @@ pub fn feistel(
 ) -> Vec<bool> {
     let mut state = input.to_owned();
     for i in (0..rounds).map(|i| if encrypt { i } else { rounds - i - 1 }) {
+        // Spilt the state into halves.
         let (left, right) = state.split_at(state.len() / 2);
+
+        // Apply f to the right half and xor it into the left half.
+        let f_right = f(i, right);
         let (new_left, new_right) = (
-            left.iter().zip(f(i, right).iter()).map(|(&l, &r)| l ^ r),
-            left.iter().cloned(),
+            left.iter().zip(f_right.iter()).map(|(&l, &r)| l ^ r),
+            right.iter().cloned(),
         );
+
+        // Swap the left and right halves.
+        let (new_left, new_right) = (new_right, new_left);
 
         state = new_left.chain(new_right).collect();
     }
