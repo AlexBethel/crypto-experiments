@@ -5,8 +5,8 @@
 /// half of the data.
 pub fn feistel(
     rounds: usize,
-    f: impl Fn(usize, Vec<bool>) -> Vec<bool>,
-    input: Vec<bool>,
+    f: impl Fn(usize, &[bool]) -> Vec<bool>,
+    input: &[bool],
 ) -> Vec<bool> {
     todo!()
 }
