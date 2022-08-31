@@ -1,5 +1,7 @@
 //! Generic Feistel network implementation.
 
+use std::iter::zip;
+
 /// Encrypts or decrypts using a Feistel network. `rounds` is the number of rounds, `input` is the
 /// input data, and `f` is the round function, which takes as input the round number and the right
 /// half of the data.
@@ -17,7 +19,7 @@ pub fn feistel(
         // Apply f to the right half and xor it into the left half.
         let f_right = f(i, right);
         let (new_left, new_right) = (
-            left.iter().zip(f_right.iter()).map(|(&l, &r)| l ^ r),
+            zip(left.iter(), f_right.iter()).map(|(&l, &r)| l ^ r),
             right.iter().cloned(),
         );
 
